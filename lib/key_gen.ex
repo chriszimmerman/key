@@ -1,21 +1,21 @@
 defmodule Key.KeyGen do
   @notes [:a, :a_sharp, :b, :c, :c_sharp, :d, :d_sharp, :e, :f, :f_sharp, :g, :g_sharp]
 
-  def get_major_key(note) when is_atom(note) do
-    get_notes_with_base_note(note, @notes)
+  def get_major_key(note) when note in @notes do
+    cycle_to_base_note(note, @notes)
     |> get_major_key_notes
   end
 
-  def get_minor_key(note) when is_atom(note) do
-    get_notes_with_base_note(note, @notes)
+  def get_minor_key(note) when note in @notes do
+    cycle_to_base_note(note, @notes)
     |> get_minor_key_notes
   end
 
-  defp get_notes_with_base_note(note, [base_note|rest]) when note != base_note do
-    get_notes_with_base_note(note, rest ++ [base_note]) 
+  defp cycle_to_base_note(note, [base_note|rest]) when note != base_note do
+    cycle_to_base_note(note, rest ++ [base_note]) 
   end
 
-  defp get_notes_with_base_note(note, [base_note|rest]) when note == base_note do
+  defp cycle_to_base_note(note, [base_note|rest]) when note == base_note do
     [base_note|rest]
   end
 
