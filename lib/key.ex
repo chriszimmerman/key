@@ -1,14 +1,24 @@
-defmodule Key.Key do
+defmodule Key.Generator do
   @notes [:a, :a_sharp, :b, :c, :c_sharp, :d, :d_sharp, :e, :f, :f_sharp, :g, :g_sharp]
 
   def get_major_key(note) when note in @notes do
     cycle_to_base_note(note, @notes)
     |> get_major_key_notes
+    |> fn key -> {:ok, key} end.()
+  end
+
+  def get_major_key(_) do
+    {:error, :invalid_note}
   end
 
   def get_minor_key(note) when note in @notes do
     cycle_to_base_note(note, @notes)
     |> get_minor_key_notes
+    |> fn key -> {:ok, key} end.()
+  end
+
+  def get_minor_key(_) do
+    {:error, :invalid_note}
   end
 
   defp cycle_to_base_note(note, [base_note|rest]) when note != base_note do
